@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# Build output
+dist
+build
+**/dist
+**/build
+
+# Logs
+*.log
+logs
+
+# Testing / coverage
+coverage
+.nyc_output
+
+# IDE
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp
+temp
+
+# Frontend cache/build files
+.next
+.cache
+.parcel-cache
