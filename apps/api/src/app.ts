@@ -1,9 +1,10 @@
 import express from "express"
 import cors from "cors"
-import env from "./src/config/env"
+import cookieParser from "cookie-parser"
+import env from "./config/env"
 const app = express()
 
-const allowedOrigins =env.CORS_ORIGIN?.split(",") || []
+const allowedOrigins = env.CORS_ORIGIN?.split(",") || []
 
 app.use(
     cors({
@@ -18,5 +19,6 @@ app.use(express.urlencoded({
     extended: true,
     limit: "16kb"
 }))
+app.use(cookieParser())
 
 export default app
