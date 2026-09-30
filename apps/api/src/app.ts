@@ -3,6 +3,8 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import env from "./config/env"
 import apiRoutes from "./routes"
+import { errorHandler } from "./middlewares/error.middleware"
+
 const app = express()
 
 const allowedOrigins = env.CORS_ORIGIN?.split(",") || []
@@ -23,5 +25,7 @@ app.use(express.urlencoded({
 app.use(cookieParser())
 
 app.use("/api", apiRoutes)
+
+app.use(errorHandler)
 
 export default app
