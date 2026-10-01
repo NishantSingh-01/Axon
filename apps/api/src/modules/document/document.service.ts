@@ -48,10 +48,3 @@ export const createDocument = async (title: string, file: Express.Multer.File, u
     })
     return document
 }
-
-export const getAllDocuments = async (userId: string) => {
-    return prisma.document.findMany({
-        where: { userId },
-        orderBy: { createdAt: "desc" },
-    })
-}
