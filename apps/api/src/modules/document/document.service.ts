@@ -1,6 +1,8 @@
 import { v4 as uuid } from "uuid";
 import cloudinary from "../../config/cloudinary";
 import { prisma } from "../../config/db";
+import { ApiError } from "../../utils/error.util";
+import { DocumentResponse } from "../../types/document.types";
 
 export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
 ): Promise<{ publicId: string; url: string }> => {
@@ -67,4 +69,33 @@ export const getAllDocuments = async (userId: string) => {
         },
     })
     return documents
+}
+
+export const getDocumentById = async (id: string, userId: string) :Promise<DocumentResponse>=> {
+    const document = await prisma.document.findFirst({
+        where: {
+            id,
+            userId,
+        },
+        select: {
+            id: true,
+            userId: true,
+            title: true,
+            originalName: true,
+            mimeType: true,
+            size: true,
+            source: true,
+            sourceUrl: true,
+            status: true,
+            errorMessage: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    })
+
+    if (!document) {
+        throw new ApiError(404, "Document not found")
+    }
+
+    return document
 }
