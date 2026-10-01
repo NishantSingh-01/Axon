@@ -28,3 +28,17 @@ export interface AuthResponseData {
     accessToken: string;
     refreshToken: string;
 }
+
+export interface AuthResult {
+    accessToken: string;
+    refreshToken: string;
+    user: UserResponse;
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: UserResponse;
+        }
+    }
+}

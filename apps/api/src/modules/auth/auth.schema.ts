@@ -15,9 +15,24 @@ export const registerSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters")
     .max(100, "Password cannot exceed 100 characters"),
-  role: z.enum(["ADMIN", "OWNER", "EDITOR", "VIEWER"])
+  role: z
+    .enum(["ADMIN", "OWNER", "EDITOR", "VIEWER"])
     .optional()
     .default("VIEWER"),
 });
 
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Invalid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required"),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
+export type RegisterSchemaType = RegisterInput;
+export type LoginSchemaType = LoginInput;

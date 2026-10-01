@@ -10,5 +10,7 @@ const env = {
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || "",
     ACCESS_TOKEN_EXPIRES_IN: (process.env.ACCESS_TOKEN_EXPIRES_IN || "15m") as SignOptions["expiresIn"],
     REFRESH_TOKEN_EXPIRES_IN: (process.env.REFRESH_TOKEN_EXPIRES_IN || "7d") as SignOptions["expiresIn"],
+    ACCESS_COOKIE_NAME: process.env.ACCESS_COOKIE_NAME || "accessToken",
+    REFRESH_COOKIE_NAME: process.env.REFRESH_COOKIE_NAME || "refreshToken",
 }
 export default env

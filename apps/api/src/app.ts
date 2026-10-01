@@ -24,7 +24,7 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser())
 
-app.use("/api", apiRoutes)
+app.use("/api/v1", apiRoutes)
 
 app.use(errorHandler)
 

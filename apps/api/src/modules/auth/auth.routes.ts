@@ -1,10 +1,15 @@
 import { Router } from "express";
-import { registerHandler } from "./auth.controller";
+import {register,login,refreshAccessToken,logout,getMe,} from "./auth.controller";
 import { validate } from "../../middlewares/validate.middleware";
-import { registerSchema } from "./auth.schema";
+import { authenticate } from "../../middlewares/auth.middleware";
+import { registerSchema, loginSchema } from "./auth.schema";
 
-const router = Router();
+const router = Router()
 
-router.post("/register", validate(registerSchema), registerHandler);
+router.post("/register", validate(registerSchema), register)
+router.post("/login", validate(loginSchema), login)
+router.post("/refresh", refreshAccessToken)
+router.post("/logout", authenticate, logout)
+router.get("/me", authenticate, getMe);
 
-export default router;
+export default router

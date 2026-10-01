@@ -7,12 +7,12 @@ export const validate = (schema: ZodSchema) => {
         const result = schema.safeParse(req.body);
 
         if (!result.success) {
-            const formattedErrors = result.error.issues.map((issue) => ({
+            const formattedError = result.error.issues.map((issue) => ({
                 field: issue.path.join("."),
                 message: issue.message,
             }));
 
-            return next(new ApiError(400, "Validation failed", formattedErrors));
+            return next(new ApiError(422, "Validation failed", formattedError));
         }
 
         req.body = result.data;
