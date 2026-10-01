@@ -20,10 +20,46 @@ model User {
   passwordHash String
   role         UserRole @default(VIEWER)
   refreshToken String?
+  
 
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  documents    Document[]
+
   @@map("users")
+}
+enum DocumentStatus {
+  UPLOADED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum DocumentSource {
+  FILE
+  URL
+}
+
+model Document {
+  id           String         @id @default(uuid())
+  userId       String
+  title        String
+  originalName String?
+  mimeType     String?
+  size         Int?
+  source       DocumentSource @default(FILE)
+  sourceUrl    String?
+  storageKey   String?
+  status       DocumentStatus @default(UPLOADED)
+  errorMessage String?
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
 }

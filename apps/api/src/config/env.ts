@@ -12,5 +12,8 @@ const env = {
     REFRESH_TOKEN_EXPIRES_IN: (process.env.REFRESH_TOKEN_EXPIRES_IN || "7d") as SignOptions["expiresIn"],
     ACCESS_COOKIE_NAME: process.env.ACCESS_COOKIE_NAME || "accessToken",
     REFRESH_COOKIE_NAME: process.env.REFRESH_COOKIE_NAME || "refreshToken",
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || "",
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || "",
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || "",
 }
 export default env
