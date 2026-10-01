@@ -1,6 +1,10 @@
 import { z } from "zod"
 
-export const uploadDocumentSchema = z.object({
-  title: z.string().min(1).max(200).optional(),
+export const updateDocumentSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, "Title cannot be empty")
+    .max(200, "Title is too long"),
 })
-export type UploadDocumentInput = z.infer<typeof uploadDocumentSchema>
+export type UpdateDocumentInput = z.infer<typeof updateDocumentSchema>

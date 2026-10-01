@@ -71,7 +71,7 @@ export const getAllDocuments = async (userId: string) => {
     return documents
 }
 
-export const getDocumentById = async (id: string, userId: string) :Promise<DocumentResponse>=> {
+export const getDocumentById = async (id: string, userId: string): Promise<DocumentResponse> => {
     const document = await prisma.document.findFirst({
         where: {
             id,
@@ -97,5 +97,79 @@ export const getDocumentById = async (id: string, userId: string) :Promise<Docum
         throw new ApiError(404, "Document not found")
     }
 
+    return document
+}
+export const deleteDocument = async (id: string, userId: string): Promise<DocumentResponse> => {
+    const document = await prisma.document.delete({
+        where: {
+            id,
+            userId,
+        },
+        select: {
+            id: true,
+            userId: true,
+            title: true,
+            originalName: true,
+            mimeType: true,
+            size: true,
+            source: true,
+            sourceUrl: true,
+            status: true,
+            errorMessage: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    })
+
+    if (!document) {
+        throw new ApiError(404, "Document not found")
+    }
+
+    return document
+}
+export const updateDocument = async (
+    documentId: string,
+    userId: string,
+    title: string
+) => {
+    const document = await prisma.document.findFirst({
+        where: {
+            id: documentId,
+            userId,
+        },
+    });
+
+    if (!document) {
+        throw new ApiError(404, "Document not found");
+    }
+
+    const updatedDocument = await prisma.document.update({
+        where: {
+            id: documentId,
+        },
+        data: {
+            title,
+        },
+    });
+
+    return updatedDocument
+}
+
+export const getStatus = async (id: string, userId: string) => {
+    const document = await prisma.document.findFirst({
+        where: {
+            id,
+            userId,
+        },
+        select: {
+            id: true,
+            status: true,
+            errorMessage: true,
+        },
+    })
+
+    if (!document) {
+        throw new ApiError(404, "Document not found")
+    }
     return document
 }
