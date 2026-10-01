@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import cloudinary from "../../config/cloudinary";
+import { prisma } from "../../config/db";
 
 export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
 ): Promise<{ publicId: string; url: string }> => {
@@ -7,7 +8,7 @@ export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
         const stream = cloudinary.uploader.upload_stream(
             {
                 folder: "nexusai/documents",
-                resource_type: "auto",
+                resource_type: "raw",
                 public_id: uuid(),
             },
             (error, result) => {
@@ -26,4 +27,31 @@ export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
         publicId: result.public_id,
         url: result.secure_url,
     }
+}
+
+export const createDocument = async (title: string, file: Express.Multer.File, userId: string) => {
+    const fileBuffer = file.buffer
+    const { publicId, url } = await uploadDocumentToCloudinary(fileBuffer)
+
+    const document = await prisma.document.create({
+        data: {
+            userId,
+            title: title?.trim() || file.originalname,
+            originalName: file.originalname,
+            mimeType: file.mimetype,
+            size: file.size,
+            source: "FILE",
+            storageKey: publicId,
+            sourceUrl: url,
+            status: "UPLOADED",
+        }
+    })
+    return document
+}
+
+export const getAllDocuments = async (userId: string) => {
+    return prisma.document.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+    })
 }
