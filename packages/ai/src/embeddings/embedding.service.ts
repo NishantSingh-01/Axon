@@ -8,12 +8,11 @@ dotenv.config({
 export const getEmbeddings = async (text: string[]) => {
     try {
         const embeddings = new GoogleGenerativeAIEmbeddings({
-            model: "gemini-embedding-2",
+            model: process.env.EMBEDDING_MODEL as string,
             apiKey: process.env.GEMINI_API_KEY,
-            outputDimensionality: 2048,
+            outputDimensionality: Number(process.env.EMBEDDING_DIMENSION),
         })
         const embedding = await embeddings.embedDocuments(text)
-        // console.log("Embeddings", embedding)
         return embedding
     } catch (error) {
         console.error("Error generating embeddings:", error)
