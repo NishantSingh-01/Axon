@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "@langchain/core": "^1.2.14",
+    "@langchain/google-genai": "^2.3.2",
+    "@langchain/textsplitters": "^1.0.2",
+    "@qdrant/js-client-rest": "^1.19.0",
+    "dotenv": "^18.0.5",
+    "pdf-parse": "^2.4.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "name": "ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
