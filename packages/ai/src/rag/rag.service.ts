@@ -21,7 +21,7 @@ export const askQuestion = async (question: string): Promise<RagResult> => {
 
         const answer = await generateResponse(prompt)
         return {
-            answer,
+            answer: answer as string,
             source: chunks
         }
 
@@ -30,3 +30,4 @@ export const askQuestion = async (question: string): Promise<RagResult> => {
         throw error
     }
 }
+askQuestion("What is the latest news on Apple?").then((res)=>console.log(res)).catch(console.error)
