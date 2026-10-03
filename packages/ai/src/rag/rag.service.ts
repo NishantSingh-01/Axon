@@ -1,8 +1,9 @@
+import { generateResponse } from "../llm/client";
 import { buildPrompt } from "./promptBuilder";
 import { documentRetriever, type RetrievedChunk } from "./retriever";
 
 export interface RagResult {
-    prompt: string;
+    answer: string;
     source: RetrievedChunk[];
 }
 
@@ -17,8 +18,10 @@ export const askQuestion = async (question: string): Promise<RagResult> => {
             .map((chunk) => chunk.content)
             .join("\n\n")
         const prompt = await buildPrompt(context, question)
+
+        const answer = await generateResponse(prompt)
         return {
-            prompt,
+            answer,
             source: chunks
         }
 
