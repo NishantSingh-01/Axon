@@ -8,7 +8,7 @@ export const splitDocument = async (text: string) => {
         .trim();
 
     const splitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 800,
+        chunkSize: 1000,
         chunkOverlap: 150,
         separators: ["\n\n", "\n", ".", " "],
     })

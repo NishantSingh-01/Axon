@@ -50,8 +50,6 @@ export const fetchDocumentById = asyncHandler(async (req, res) => {
         new ApiResponse(200, { document }, "Document fetched successfully")
     )
 })
-
-
 export const deleteDocumentById = asyncHandler(async (req, res) => {
     const userId = req.user?.id
     if (!userId) {

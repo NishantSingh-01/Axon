@@ -28,3 +28,17 @@ export const upsertDocument = async (text: string[]) => {
     console.log("Points upserted", response)
     return response
 }
+
+export const similaritySearch = async (query: string, limit = 3) => {
+    const queryVector = (await getEmbeddings([query]))[0]
+    if (!queryVector || queryVector.length === 0) {
+        throw new Error("Failed to get query embeddings")
+    }
+    const response = await qdrantClient.query(collectionName, {
+        query: queryVector,
+        using: "text",
+        limit,
+        with_payload: true,
+    })
+    return response.points
+}

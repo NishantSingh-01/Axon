@@ -13,8 +13,8 @@ connectDB().then(() => {
     app.listen(env.PORT, () => {
         console.log("╔══════════════════════════════╗");
         console.log("║     〰️ SERVER RUNNING        ║");
-        console.log("║     🚀 Port: 6000            ║");
-        console.log("║     🌐 http://localhost:6000 ║");
+        console.log("║     🚀 Port: 8000            ║");
+        console.log("║     🌐 http://localhost:8000 ║");
         console.log("╚══════════════════════════════╝");
     })
 
