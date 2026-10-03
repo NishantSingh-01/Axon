@@ -6,6 +6,7 @@ dotenv.config({
 
 
 export const getEmbeddings = async (text: string[]) => {
+
     try {
         const embeddings = new GoogleGenerativeAIEmbeddings({
             model: process.env.EMBEDDING_MODEL as string,

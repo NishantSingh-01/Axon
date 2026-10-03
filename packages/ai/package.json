@@ -4,10 +4,12 @@
     "@langchain/google-genai": "^2.3.2",
     "@langchain/textsplitters": "^1.0.2",
     "@qdrant/js-client-rest": "^1.19.0",
+    "@tavily/core": "^0.7.13",
     "crypto": "^1.0.1",
     "dotenv": "^18.0.5",
     "groq-sdk": "^1.6.0",
-    "pdf-parse": "^2.4.5"
+    "pdf-parse": "^2.4.5",
+    "tavily": "^2.0.0"
   },
   "type": "module",
   "devDependencies": {
