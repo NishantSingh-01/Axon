@@ -1,7 +1,4 @@
-import { getEmbeddings } from "../embeddings/embedding.service";
 import { similaritySearch } from "../vector/qdrant.service";
-
-
 
 export interface RetrievedChunk {
     score: number;

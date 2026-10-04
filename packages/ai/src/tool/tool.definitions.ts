@@ -1,23 +1,34 @@
-
 export const toolDefinitions = [
     {
         type: "function",
         function: {
             name: "searchWeb",
-            description:
-                "Search the internet for current information when the answer is not available in the knowledge base.",
+            description: "Search the web for current or time-sensitive information.",
             parameters: {
                 type: "object",
                 properties: {
                     query: {
-                        type: "string",
-                        description: "The search query to look up on the internet",
-                    },
+                        type: "string"
+                    }
                 },
-                required: ["query"],
-                additionalProperties: false,
-            },
-        },
+                required: ["query"]
+            }
+        }
     },
-
+    {
+        type: "function",
+        function: {
+            name: "knowledgeSearch",
+            description: "Search uploaded company documents and internal knowledge.",
+            parameters: {
+                type: "object",
+                properties: {
+                    query: {
+                        type: "string"
+                    }
+                },
+                required: ["query"]
+            }
+        }
+    }
 ];
