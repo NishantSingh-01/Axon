@@ -1,7 +1,8 @@
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
-import { toolDefinitions } from "../tool/tool.definitions";
-import { toolExecutor } from "../tool/tool.executor";
+import { toolDefinitions } from "../tools/tool.definitions";
+import { toolExecutor } from "../tools/tool.executor";
+import { RetrievalScope } from "../types/retrieval";
 
 dotenv.config({
     path: "../../.env",
@@ -109,7 +110,7 @@ Action: knowledgeSearch + searchWeb
 // - Current/time-sensitive questions -> searchWeb
 // - General stable knowledge -> direct answer
 // `;
-export const generateResponse = async (prompt: string) => {
+export const generateResponse = async (prompt: string, scope: RetrievalScope) => {
     let messages: Groq.Chat.Completions.ChatCompletionMessageParam[] = [
         {
             role: "system",
