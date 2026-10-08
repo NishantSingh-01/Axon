@@ -133,8 +133,8 @@ export const generateResponse = async (prompt: string, scope: RetrievalScope) =>
                 messages,
             })
             const toolcall = response.choices[0].message.tool_calls;
-            if (!toolcall) {
-                console.log("No tool calls:>>LLM")
+            if (!toolcall || toolcall.length === 0) {
+                console.log("No tool call>>LLM")
                 return response.choices[0].message.content
             }
             messages.push(response.choices[0].message)
@@ -148,7 +148,7 @@ export const generateResponse = async (prompt: string, scope: RetrievalScope) =>
                         `Invalid arguments for tool ${toolName}`
                     );
                 }
-                const result = await toolExecutor(toolName, args)
+                const result = await toolExecutor(toolName, args, scope)
                 messages.push({
                     tool_call_id: tool.id,
                     role: "tool",
