@@ -11,8 +11,8 @@ export interface RetrievedChunk {
 }
 
 export const documentRetrieverForDocument = async (
-    query: string,
     scope: RetrievalScope,
+    query: string,
     topK: number = 3
 ): Promise<RetrievedChunk[]> => {
 

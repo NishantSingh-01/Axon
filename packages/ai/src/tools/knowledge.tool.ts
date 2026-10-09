@@ -10,10 +10,10 @@ export const knowledgeSearchTool = async (
     scope: RetrievalScope
 ) => {
     let chunks
-    if (scope.documentId) {         
+    if (scope.documentId) {
         chunks = await documentRetrieverForDocument(
-            query,
             scope,
+            query,
             5
         )
     }
