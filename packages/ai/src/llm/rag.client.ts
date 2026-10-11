@@ -19,7 +19,10 @@ Answer strictly based on the provided document context.
    "This information is not available in the provided documents."
 3. Do NOT invent, assume, or infer anything beyond the context.
 4. Be concise and professional.
-5. Use bullistlet points when ing details.
+5. Use bullet points when presenting multiple details.
+6. Do not answer if the question is not related to the documents or context.
+7. If the chunks are empty, it means there is no relevant information in the documents.
+
 Remember: Accuracy based on the context is your top priority.`
 
 export const generateRagResponse = async (

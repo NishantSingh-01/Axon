@@ -25,7 +25,7 @@ export const knowledgeSearchTool = async (
         )
     }
 
-    if (chunks.length === 0) {
+    if (!chunks || chunks.length === 0) {
         return {
             found: false,
             results: [],
