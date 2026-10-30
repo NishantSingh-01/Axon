@@ -309,10 +309,3 @@ Base URL: `/api/v1`
 - [Docker & Docker Compose](https://www.docker.com/)
 
 
-
-
-## 👨‍💻 Author
-
-**Nishant Singh**
-
-- GitHub: [@NishantSingh-01](https://github.com/NishantSingh-01)
