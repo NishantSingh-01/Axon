@@ -4,9 +4,7 @@ dotenv.config({
     path: "../../../../.env",
 })
 
-
 export const getEmbeddings = async (text: string[]) => {
-
     try {
         const embeddings = new GoogleGenerativeAIEmbeddings({
             model: process.env.EMBEDDING_MODEL as string,
@@ -20,3 +18,4 @@ export const getEmbeddings = async (text: string[]) => {
         throw error
     }
 }
+
