@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import cloudinary from "../../config/cloudinary";
 import { prisma } from "../../config/db";
+import logger from "../../config/logger";
 import { ApiError } from "../../utils/error.util";
 import { DocumentResponse } from "../../types/document.types";
 
@@ -15,6 +16,7 @@ export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
             },
             (error, result) => {
                 if (error) {
+                    logger.error({ err: error }, "Failed to upload document file to Cloudinary");
                     reject(error)
                     return
                 }
@@ -24,6 +26,8 @@ export const uploadDocumentToCloudinary = async (fileBuffer: Buffer,
         )
         stream.end(fileBuffer)
     })
+
+    logger.info({ publicId: result.public_id }, "Document file uploaded to Cloudinary");
 
     return {
         publicId: result.public_id,
@@ -48,6 +52,9 @@ export const createDocument = async (title: string, file: Express.Multer.File, u
             status: "UPLOADED",
         }
     })
+
+    logger.info({ documentId: document.id, userId, title: document.title, size: file.size }, "Document record created in database");
+
     return document
 }
 export const getAllDocuments = async (userId: string) => {
@@ -94,16 +101,28 @@ export const getDocumentById = async (id: string, userId: string): Promise<Docum
     })
 
     if (!document) {
+        logger.warn({ id, userId }, "Document lookup failed: Document not found");
         throw new ApiError(404, "Document not found")
     }
 
     return document
 }
 export const deleteDocument = async (id: string, userId: string): Promise<DocumentResponse> => {
-    const document = await prisma.document.delete({
+    const existing = await prisma.document.findFirst({
         where: {
             id,
             userId,
+        },
+    });
+
+    if (!existing) {
+        logger.warn({ id, userId }, "Document delete failed: Document not found");
+        throw new ApiError(404, "Document not found");
+    }
+
+    const document = await prisma.document.delete({
+        where: {
+            id,
         },
         select: {
             id: true,
@@ -121,9 +140,7 @@ export const deleteDocument = async (id: string, userId: string): Promise<Docume
         },
     })
 
-    if (!document) {
-        throw new ApiError(404, "Document not found")
-    }
+    logger.info({ id, userId }, "Document record deleted from database");
 
     return document
 }
@@ -140,6 +157,7 @@ export const updateDocument = async (
     });
 
     if (!document) {
+        logger.warn({ documentId, userId }, "Document update failed: Document not found");
         throw new ApiError(404, "Document not found");
     }
 
@@ -151,6 +169,8 @@ export const updateDocument = async (
             title,
         },
     });
+
+    logger.info({ documentId, userId, newTitle: title }, "Document title updated in database");
 
     return updatedDocument
 }
@@ -169,6 +189,7 @@ export const getStatus = async (id: string, userId: string) => {
     })
 
     if (!document) {
+        logger.warn({ id, userId }, "Document status lookup failed: Document not found");
         throw new ApiError(404, "Document not found")
     }
     return document
