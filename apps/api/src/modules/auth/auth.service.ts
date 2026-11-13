@@ -1,4 +1,5 @@
 import { prisma } from "../../config/db";
+import logger from "../../config/logger";
 import { hashPassword, comparePassword } from "../../utils/password.util";
 import { ApiError } from "../../utils/error.util";
 import {
@@ -29,6 +30,7 @@ export const registerUser = async (data: RegisterInput): Promise<AuthResult> => 
         where: { email },
     });
     if (existingUser) {
+        logger.warn({ email }, "Registration failed: Email is already registered");
         throw new ApiError(409, "Email is already registered");
     }
 
@@ -51,6 +53,8 @@ export const registerUser = async (data: RegisterInput): Promise<AuthResult> => 
         },
     });
 
+    logger.info({ userId: newUser.id, email: newUser.email, role: newUser.role }, "New user registered in database");
+
     const { accessToken, refreshToken } = await issueTokenPair(newUser.id);
 
     return {
@@ -67,13 +71,17 @@ export const loginUser = async (data: LoginInput): Promise<AuthResult> => {
         where: { email },
     });
     if (!user) {
+        logger.warn({ email }, "Login failed: User not found");
         throw new ApiError(401, "Invalid email or password");
     }
 
     const isPasswordCorrect = await comparePassword(password, user.passwordHash);
     if (!isPasswordCorrect) {
+        logger.warn({ email, userId: user.id }, "Login failed: Incorrect password");
         throw new ApiError(401, "Invalid email or password");
     }
+
+    logger.info({ userId: user.id, email: user.email }, "User credentials verified successfully");
 
     const { accessToken, refreshToken } = await issueTokenPair(user.id);
 
@@ -96,6 +104,7 @@ export const rotateRefreshToken = async (incomingToken: string): Promise<Refresh
     try {
         payload = verifyRefreshToken(incomingToken)
     } catch {
+        logger.warn("Token rotation failed: Invalid or expired refresh token");
         throw new ApiError(401, "Invalid or expired refresh token");
     }
 
@@ -103,11 +112,13 @@ export const rotateRefreshToken = async (incomingToken: string): Promise<Refresh
         where: { id: payload.userId },
     })
     if (!user || !user.refreshToken) {
+        logger.warn({ userId: payload.userId }, "Token rotation failed: User or refresh token not found");
         throw new ApiError(401, "Refresh token invalid — please log in again");
     }
 
     const incomingHashed = hashToken(incomingToken)
     if (incomingHashed !== user.refreshToken) {
+        logger.error({ userId: user.id }, "Security alert: Refresh token mismatch / reuse detected, revoking session");
         await prisma.user.update({
             where: { id: user.id },
             data: { refreshToken: null },
@@ -116,6 +127,7 @@ export const rotateRefreshToken = async (incomingToken: string): Promise<Refresh
     }
 
     const { accessToken, refreshToken } = await issueTokenPair(user.id);
+    logger.info({ userId: user.id }, "Refresh token rotated and new token pair issued");
 
     return {
         accessToken,
@@ -128,6 +140,7 @@ export async function logoutUser(userId: string): Promise<void> {
         where: { id: userId },
         data: { refreshToken: null },
     });
+    logger.info({ userId }, "User refresh token revoked in database");
 }
 
 export const getUser = async (userId: string): Promise<UserResponse> => {
@@ -144,6 +157,7 @@ export const getUser = async (userId: string): Promise<UserResponse> => {
     });
 
     if (!user) {
+        logger.warn({ userId }, "User retrieval failed: User not found");
         throw new ApiError(404, "User not found");
     }
 

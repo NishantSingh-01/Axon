@@ -3,6 +3,7 @@ import app from "./app"
 import env from "./config/env"
 import { connectDB } from "./config/db"
 import { connectRedis } from "./config/redis"
+import logger from "./config/logger"
 dotenv.config({ path: "../../.env" })
 
 
@@ -12,6 +13,7 @@ app.get('/api/health', (req, res) => {
 
 connectDB().then(() => {
     connectRedis()
+    logger.info("Server started");
     app.listen(env.PORT, () => {
         console.log("╔══════════════════════════════╗");
         console.log("║     〰️ SERVER RUNNING        ║");

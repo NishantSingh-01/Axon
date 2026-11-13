@@ -1,4 +1,5 @@
 import env from "../../config/env";
+import logger from "../../config/logger";
 import { asyncHandler } from "../../utils/asyncHandler.util";
 import { ApiError } from "../../utils/error.util";
 import { ApiResponse } from "../../utils/response.util";
@@ -26,6 +27,8 @@ export const register = asyncHandler(async (req, res) => {
     res.cookie(env.ACCESS_COOKIE_NAME, accessToken, accessTokenCookieOptions);
     res.cookie(env.REFRESH_COOKIE_NAME, refreshToken, cookieOptions);
 
+    logger.info({ userId: user.id, email: user.email }, "User registered and logged in successfully");
+
     return res
         .status(201)
         .json(
@@ -38,6 +41,8 @@ export const login = asyncHandler(async (req, res) => {
 
     res.cookie(env.ACCESS_COOKIE_NAME, accessToken, accessTokenCookieOptions);
     res.cookie(env.REFRESH_COOKIE_NAME, refreshToken, cookieOptions);
+
+    logger.info({ userId: user.id, email: user.email }, "User logged in and cookies set successfully");
     
     return res
         .status(200)
@@ -50,6 +55,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingToken = req.cookies?.[env.REFRESH_COOKIE_NAME];
 
     if (!incomingToken) {
+        logger.warn("Refresh token attempt rejected: No refresh token provided in cookies");
         throw new ApiError(401, "No refresh token provided");
     }
 
@@ -57,6 +63,8 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 
     res.cookie(env.ACCESS_COOKIE_NAME, accessToken, accessTokenCookieOptions);
     res.cookie(env.REFRESH_COOKIE_NAME, refreshToken, cookieOptions);
+
+    logger.info("Access token refreshed successfully");
 
     return res.status(200).json(
         new ApiResponse(
@@ -69,6 +77,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 
 export const logout = asyncHandler(async (req, res) => {
     if (!req.user?.id) {
+        logger.warn("Logout attempt rejected: Unauthorized request");
         throw new ApiError(401, "Unauthorized");
     }
 
@@ -77,6 +86,8 @@ export const logout = asyncHandler(async (req, res) => {
     res.clearCookie(env.REFRESH_COOKIE_NAME, cookieOptions);
     res.clearCookie(env.ACCESS_COOKIE_NAME, accessTokenCookieOptions);
 
+    logger.info({ userId: req.user.id }, "User logged out successfully");
+
     return res.status(200).json(
         new ApiResponse(200, {}, "Logged out successfully")
     );
@@ -84,10 +95,13 @@ export const logout = asyncHandler(async (req, res) => {
 
 export const getMe = asyncHandler(async (req, res) => {
     if (!req.user?.id) {
+        logger.warn("Get profile attempt rejected: Unauthorized request");
         throw new ApiError(401, "Unauthorized");
     }
 
     const user = await getUser(req.user.id);
+
+    logger.info({ userId: user.id }, "Current user profile retrieved");
 
     return res.status(200).json(
         new ApiResponse(
