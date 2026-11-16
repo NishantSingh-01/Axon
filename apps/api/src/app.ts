@@ -4,11 +4,13 @@ import cookieParser from "cookie-parser"
 import env from "./config/env"
 import apiRoutes from "./routes"
 import { errorHandler } from "./middlewares/error.middleware"
+import requestLogger from "./middlewares/httpLogger"
 
 const app = express()
 
-const allowedOrigins = env.CORS_ORIGIN?.split(",") || []
+app.use(requestLogger)
 
+const allowedOrigins = env.CORS_ORIGIN?.split(",") || []
 app.use(
     cors({
         origin: allowedOrigins,
