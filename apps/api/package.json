@@ -5,7 +5,7 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --import ./src/instrumentation.ts ./src/app.ts",
+    "dev": "tsx watch --import ./src/instrumentation.ts ./src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
@@ -14,7 +14,9 @@
   "dependencies": {
     "@opentelemetry/api": "^1.10.0",
     "@opentelemetry/auto-instrumentations-node": "^0.83.1",
+    "@opentelemetry/sdk-metrics": "^3.1.1",
     "@opentelemetry/sdk-node": "^0.301.2",
+    "@opentelemetry/sdk-trace": "^3.1.1",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@types/cookie-parser": "^1.4.10",
