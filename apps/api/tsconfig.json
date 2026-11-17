@@ -16,7 +16,8 @@
     "incremental": true
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/instrumentation.ts"
   ],
   "exclude": [
     "node_modules",
