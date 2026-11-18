@@ -1,6 +1,3 @@
-
-
-
 export const buildPrompt = (context: string, question: string) => {
     return `
     You are an AI assistant for answering questions from company documents.
