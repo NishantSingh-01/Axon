@@ -6,7 +6,6 @@ const logger = pino({
 
     mixin() {
         const span = trace.getActiveSpan();
-
         if (!span) {
             return {};
         }
