@@ -1,5 +1,5 @@
 export interface RetrievalScope {
-    tenantId: string;
+    tenantId?: string;
     userId: string;
     documentId?: string;
 }

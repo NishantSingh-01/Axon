@@ -12,8 +12,8 @@ const collectionName = process.env.QDRANT_COLLECTION as string
 
 export const upsertDocument = async (chunks: string[], scope: RetrievalScope) => {
 
-    if (!scope.tenantId || !scope.userId || !scope.documentId) {
-        throw new Error("Invalid retrieval scope");
+    if (!scope.userId || !scope.documentId) {
+        throw new Error("Invalid retrieval scope: userId and documentId are required");
     }
 
     const vectors = await getEmbeddings(chunks)
@@ -42,6 +42,7 @@ export const similaritySearchByUser = async (
     scope: RetrievalScope,
     topK: number = 5
 ) => {
+    const tenantId = scope.tenantId || "default";
     const queryVector = (await getEmbeddings([query]))[0];
 
     if (!queryVector || queryVector.length === 0) {
@@ -58,7 +59,7 @@ export const similaritySearchByUser = async (
                 {
                     key: "tenantId",
                     match: {
-                        value: scope.tenantId,
+                        value: tenantId,
                     },
                 },
                 {
@@ -78,6 +79,7 @@ export const similaritySearchByDocument = async (
     scope: RetrievalScope,
     topK: number = 3
 ) => {
+    const tenantId = scope.tenantId || "default";
     const queryVector = (await getEmbeddings([query]))[0];
 
     if (!queryVector || queryVector.length === 0) {
@@ -98,7 +100,7 @@ export const similaritySearchByDocument = async (
                 {
                     key: "tenantId",
                     match: {
-                        value: scope.tenantId,
+                        value: tenantId,
                     },
                 },
                 {

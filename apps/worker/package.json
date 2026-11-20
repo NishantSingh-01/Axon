@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@axon/ai": "file:../../packages/ai",
     "@axon/queue": "file:../../packages/queue",
     "bullmq": "^6.7.8"
   },
@@ -8,6 +9,7 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
+    "@types/node": "^26.6.6",
     "dotenv": "^18.0.10",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
