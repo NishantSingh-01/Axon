@@ -49,12 +49,11 @@ export const createDocument = async (title: string, file: Express.Multer.File, u
             source: "FILE",
             storageKey: publicId,
             sourceUrl: url,
-            status: "UPLOADED",
+            status: "PENDING",
         }
     })
 
     logger.info({ documentId: document.id, userId, title: document.title, size: file.size }, "Document record created in database");
-
     return document
 }
 export const getAllDocuments = async (userId: string) => {

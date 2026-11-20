@@ -1,10 +1,11 @@
 import { Worker } from "bullmq";
-import { createBullMQConnection } from "../../../../packages/queue/src/connection";
+import { createBullMQConnection, type ProcessDocumentJobData } from "@axon/queue";
 
 
 const connection = createBullMQConnection(true)
 
-const worker = new Worker("process-document-queue",
+const worker = new Worker<ProcessDocumentJobData>(
+    "process-document-queue",
     async (job) => {
         console.log("Processing document:", job.id)
 

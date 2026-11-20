@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@axon/queue": "file:../../packages/queue",
     "bullmq": "^6.7.8"
   },
   "name": "worker",
@@ -12,7 +13,11 @@
     "typescript": "^7.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --import ./src/instrumentation.ts ./src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "worker:dev": "tsx watch  ./src/workers/document.worker.ts",
+    "worker:start": "node dist/workers/document.worker.js"
   },
   "keywords": [],
   "author": "",

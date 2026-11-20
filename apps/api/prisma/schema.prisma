@@ -31,7 +31,7 @@ model User {
   @@map("users")
 }
 enum DocumentStatus {
-  UPLOADED
+  PENDING
   PROCESSING
   COMPLETED
   FAILED
@@ -52,7 +52,7 @@ model Document {
   source       DocumentSource @default(FILE)
   sourceUrl    String?
   storageKey   String?
-  status       DocumentStatus @default(UPLOADED)
+  status       DocumentStatus @default(PENDING)
   errorMessage String?
 
   createdAt    DateTime       @default(now())
