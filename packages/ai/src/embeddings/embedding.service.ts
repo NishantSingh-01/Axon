@@ -18,4 +18,3 @@ export const getEmbeddings = async (text: string[]) => {
         throw error
     }
 }
-

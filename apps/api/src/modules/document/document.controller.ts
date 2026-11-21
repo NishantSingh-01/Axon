@@ -3,7 +3,7 @@ import { ApiError } from "../../utils/error.util";
 import { createDocument, deleteDocument, getAllDocuments, getDocumentById, getStatus, updateDocument } from "./document.service";
 import { ApiResponse } from "../../utils/response.util";
 import logger from "../../config/logger";
-import { documentQueue, type ProcessDocumentJobData } from '@axon/queue'
+import { processDocumentQueue, type ProcessDocumentJobData } from '@axon/queue'
 
 export const uploadDocument = asyncHandler(async (req, res) => {
     if (!req.file) {
@@ -19,7 +19,7 @@ export const uploadDocument = asyncHandler(async (req, res) => {
 
     logger.info({ documentId: document.id, userId, title: document.title }, "Document queued for processing");
 
-    const job = await documentQueue.add(
+    const job = await processDocumentQueue.add(
         'ingest-document',
         {
             documentId: document.id,

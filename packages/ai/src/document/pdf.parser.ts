@@ -9,7 +9,7 @@ export const extractPdfText = async (pdfUrl: string) => {
     const result = await parser.getText()
 
     const text = result.text.trim()
-    console.log("Text extracted from PDF", text)
+    // console.log("Text extracted from PDF", text)
 
     if (!text) {
       throw new Error("No text could be extracted from the PDF")
@@ -20,4 +20,4 @@ export const extractPdfText = async (pdfUrl: string) => {
     await parser.destroy()
   }
 }
-
+// extractPdfText("https://res.cloudinary.com/dpcdncnka/raw/upload/v1795244969/nexusai/documents/8bb3c506-03bf-4985-b7fb-dff9677419c5")

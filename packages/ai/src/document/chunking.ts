@@ -13,6 +13,6 @@ export const splitDocument = async (text: string) => {
         separators: ["\n\n", "\n", ".", " "],
     })
     const chunks = await splitter.splitText(cleanedText)
-    console.log("Chunks", chunks)
+    // console.log("Chunks", chunks)
     return chunks
 }
